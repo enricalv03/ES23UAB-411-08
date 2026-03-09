@@ -5,9 +5,9 @@
 
 ### Attendees: 
 * Enric Alvarez (NIU: 1713284)
-* Maria Figueres (NIU: XX)
-* Neus Roig (NIU: XX)
-* Blay Clotas (NIU: XX)
+* Maria Figueres (NIU: 1747300)
+* Neus Roig (NIU: 1747967)
+* Blay Clotas (NIU: 1709719)
 
 ### Minutes of the meeting: 
 * Triat el _Scrum Master_, serà XX.
