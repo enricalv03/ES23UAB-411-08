@@ -6,9 +6,9 @@
 
 ### Integrants
 1. [Enric Alvarez, NIU: 1713284, Github user: enricalv03](https://github.com/enricalv03)
-2. []()
-3. []()
-4. []()
+2. [Maria Figueres, NIU: , Github user: ](https://gihub.com/)
+3. [Neus Roig, NIU: , Github user: ](https://github.com/)
+4. [Blay Clotas, NIU: , Github user: ](https://github.com/)
 
 ## Introducció
 Aquest repositori consta d'unes pràctiques que es fan a l'assignatura Enginyeria del Software. Enginyeria Informàtica. Escola d'Enginyeria. Curs 2025-26. Universitat Autònoma de Barcelona.
