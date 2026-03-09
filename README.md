@@ -15,7 +15,9 @@ Aquest repositori consta d'unes pràctiques que es fan a l'assignatura Enginyeri
 
 ## Contingut
 [documents]
-[requeriments]
+[requirements]
+[minutes]
+[other]
 [diagrames]
 [code]
 
