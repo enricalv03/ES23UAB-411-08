@@ -6,7 +6,7 @@
 
 ### Integrants
 1. [Enric Alvarez, NIU: 1713284, Github user: enricalv03](https://github.com/enricalv03)
-2. [Maria Figueres, NIU: 1747300, Github user: NIU1747300](https://gihub.com/NIU1747300)
+2. [Maria Figueras, NIU: 1747300, Github user: NIU1747300](https://gihub.com/NIU1747300)
 3. [Neus Roig, NIU: 1747967, Github user: NIU1747967](https://github.com/1747967)
 4. [Blay Clotas, NIU: 1709719, Github user: pacman-boy](https://github.com/pacman-boy)
 
