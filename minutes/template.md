@@ -10,7 +10,7 @@
 * Blay Clotas (NIU: 1709719)
 
 ### Minutes of the meeting: 
-* Triat el _Scrum Master_, serà XX.
+* Triat el _Scrum Master_, serà Enric Alvarez.
 * Assignades les tasques a realitzar durant el primer _Sprint_.
 * Aclarar el procediment per a realitzar les tasques.
 * Perparació del repositori de _Github_.
