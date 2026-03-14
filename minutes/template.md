@@ -5,7 +5,7 @@
 
 ### Attendees: 
 * Enric Alvarez (NIU: 1713284)
-* Maria Figueres (NIU: 1747300)
+* Maria Figueras (NIU: 1747300)
 * Neus Roig (NIU: 1747967)
 * Blay Clotas (NIU: 1709719)
 
