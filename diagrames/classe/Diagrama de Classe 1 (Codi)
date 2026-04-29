@@ -1,0 +1,207 @@
+@startuml
+
+left to right direction
+skinparam classAttributeIconSize 0
+
+class "UsuariNoRegistrat" as NoReg #LightYellow {
+  + consultarMenus()
+  + consultarPlats()
+  + registrarCompte()
+  + iniciarSessio()
+}
+
+abstract class Usuari #LightYellow {
+  - id : UUID
+  - nom : String
+  - cognom1 : String
+  - cognom2 : String
+  - email : String
+  - adreca : String
+  - nickUsuari : String
+  - contrasenyaHash : String
+  + iniciarSessio()
+  + tancarSessio()
+}
+
+class Client #LightYellow {
+  - limitComandesActives : int = 3
+  + ferComanda()
+  + reservarComanda()
+  + repetirComanda()
+  + valorarComanda()
+  + proposarPlatPersonalitzat()
+}
+
+class Cuiner #LightYellow {
+  - disponible : Boolean
+  - horaDisponibilitat : DateTime
+  + publicarMenu()
+  + actualitzarDisponibilitat()
+  + acceptarProposta()
+  + configurarOpcionsRecollida()
+}
+
+class Repartidor #LightYellow {
+  + acceptarEnviament()
+  + actualitzarUbicacio()
+}
+
+class Menu {
+  - id : UUID
+  - nom : String
+}
+
+class Plat {
+  - id : UUID
+  - nom : String
+  - preuBase : Decimal
+  - disponible : Boolean
+}
+
+class Ingredient {
+  - id : UUID
+  - nom : String
+  - opcional : Boolean
+}
+
+class Comanda {
+  - id : UUID
+  - dataCreacio : DateTime
+  - estat : EstatComanda
+  - importTotal : Decimal
+  + calcularImportTotal()
+  + confirmarPagament()
+}
+
+class LiniaComanda {
+  - quantitat : int
+  - preuUnitari : Decimal
+}
+
+class ReservaComanda {
+  - dataHoraReserva : DateTime
+}
+
+class Enviament {
+  - id : UUID
+  - tipusRecollida : TipusRecollida
+  - distanciaKm : Decimal
+  - cost : Decimal
+  + calcularCost()
+}
+
+class PuntSeguiment {
+  - timestamp : DateTime
+  - latitud : Decimal
+  - longitud : Decimal
+}
+
+abstract class MetodePagament {
+  - id : UUID
+  - alias : String
+}
+
+class TargetaBancaria
+class CompteBancari
+class PayPal
+
+class Pagament {
+  - id : UUID
+  - import : Decimal
+  - dataPagament : DateTime
+  - estat : EstatPagament
+  + processar()
+}
+
+class Valoracio {
+  - id : UUID
+  - puntuacio : int
+  - comentari : String
+  - puntualitat : int
+  - estatMenjar : int
+}
+
+class Subscripcio {
+  - id : UUID
+  - activa : Boolean
+  - quotaMensual : Decimal
+  - dataAlta : Date
+}
+
+class ComptePunts {
+  - puntsDisponibles : int
+  + acumularPunts()
+  + aplicarDescompte()
+}
+
+class PropostaPlat {
+  - id : UUID
+  - descripcio : String
+  - estat : EstatProposta
+}
+
+class XatPrivat {
+  - id : UUID
+  - dataCreacio : DateTime
+}
+
+class Missatge {
+  - id : UUID
+  - contingut : String
+  - dataHora : DateTime
+}
+
+enum EstatComanda {
+  CREADA
+  ACCEPTADA
+  EN_PREPARACIO
+  EN_ENVIAMENT
+  COMPLETADA
+  CANCELLADA
+}
+
+enum TipusRecollida {
+  REPARTIDOR
+  CUINER
+  CLIENT
+}
+
+enum EstatPagament {
+  PENDENT
+  CONFIRMAT
+  REBUTJAT
+}
+
+enum EstatProposta {
+  PENDENT
+  ACCEPTADA
+  REBUTJADA
+  CANCELLADA
+}
+
+/'
+  Class11 <|.. Class12 flecha blanca
+  Class13 --> Class14 flecha negra
+  Class15 ..> Class16 flecha linea discontinua negra
+  Class17 ..|> Class18 flecha linea discontinua blanca
+  Class19 --* Class20 rombo negro
+  Class05 o-- Class06 rombo blanc
+'/
+
+Usuari <|-- Client
+Usuari <|-- Cuiner
+Usuari <|-- Repartidor
+
+NoReg --- Menu
+
+Comanda "1" --> "1" Pagament
+Pagament "*" --> "1" MetodePagament
+MetodePagament <|-- TargetaBancaria
+MetodePagament <|-- CompteBancari
+MetodePagament <|-- PayPal
+
+
+
+
+
+@enduml
