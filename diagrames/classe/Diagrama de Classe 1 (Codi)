@@ -21,20 +21,22 @@ abstract class Usuari #LightYellow {
   - contrasenyaHash : String
   + iniciarSessio()
   + tancarSessio()
+  + seleccionarTipusUsuari()
 }
 
 class Client #LightYellow {
-  - limitComandesActives : int = 3
   + ferComanda()
   + reservarComanda()
   + repetirComanda()
   + valorarComanda()
   + proposarPlatPersonalitzat()
+  + veureHistorial()
+  + esPremium()
+  + tipusRecollida()
 }
 
 class Cuiner #LightYellow {
   - disponible : Boolean
-  - horaDisponibilitat : DateTime
   + publicarMenu()
   + actualitzarDisponibilitat()
   + acceptarProposta()
@@ -43,25 +45,19 @@ class Cuiner #LightYellow {
 
 class Repartidor #LightYellow {
   + acceptarEnviament()
-  + actualitzarUbicacio()
 }
 
-class Menu {
+class Menu #LightBlue {
   - id : UUID
   - nom : String
 }
 
-class Plat {
+class Plat #LightBlue{
   - id : UUID
   - nom : String
   - preuBase : Decimal
   - disponible : Boolean
-}
-
-class Ingredient {
-  - id : UUID
-  - nom : String
-  - opcional : Boolean
+  + modificarPlat()
 }
 
 class Comanda {
@@ -73,16 +69,7 @@ class Comanda {
   + confirmarPagament()
 }
 
-class LiniaComanda {
-  - quantitat : int
-  - preuUnitari : Decimal
-}
-
-class ReservaComanda {
-  - dataHoraReserva : DateTime
-}
-
-class Enviament {
+class Enviament #LightBlue{
   - id : UUID
   - tipusRecollida : TipusRecollida
   - distanciaKm : Decimal
@@ -90,68 +77,55 @@ class Enviament {
   + calcularCost()
 }
 
-class PuntSeguiment {
-  - timestamp : DateTime
-  - latitud : Decimal
-  - longitud : Decimal
-}
-
-abstract class MetodePagament {
+abstract class MetodePagament #LightBlue{
   - id : UUID
   - alias : String
+  + seleccionarMetode()
 }
 
-class TargetaBancaria
-class CompteBancari
-class PayPal
+class TargetaBancaria #LightBlue
+class CompteBancari #LightBlue
+class PayPal #LightBlue
 
-class Pagament {
+class Pagament #LightBlue {
   - id : UUID
   - import : Decimal
   - dataPagament : DateTime
   - estat : EstatPagament
-  + processar()
+  + pagar()
 }
 
-class Valoracio {
+class Valoracio #LightBlue {
   - id : UUID
   - puntuacio : int
   - comentari : String
   - puntualitat : int
   - estatMenjar : int
+  + valorarComentari()
+  + valorarCuiner()
 }
 
-class Subscripcio {
+class Subscripcio #LightBlue{
   - id : UUID
   - activa : Boolean
   - quotaMensual : Decimal
   - dataAlta : Date
+  + calcularDescompte()
 }
 
-class ComptePunts {
-  - puntsDisponibles : int
-  + acumularPunts()
-  + aplicarDescompte()
-}
-
-class PropostaPlat {
+class PropostaPlat #LightBlue{
   - id : UUID
   - descripcio : String
   - estat : EstatProposta
+  + proposar()
 }
 
-class XatPrivat {
+class XatPrivat #LightBlue{
   - id : UUID
   - dataCreacio : DateTime
 }
 
-class Missatge {
-  - id : UUID
-  - contingut : String
-  - dataHora : DateTime
-}
-
-enum EstatComanda {
+enum EstatComanda #LightBlue{
   CREADA
   ACCEPTADA
   EN_PREPARACIO
@@ -172,13 +146,6 @@ enum EstatPagament {
   REBUTJAT
 }
 
-enum EstatProposta {
-  PENDENT
-  ACCEPTADA
-  REBUTJADA
-  CANCELLADA
-}
-
 /'
   Class11 <|.. Class12 flecha blanca
   Class13 --> Class14 flecha negra
@@ -188,20 +155,29 @@ enum EstatProposta {
   Class05 o-- Class06 rombo blanc
 '/
 
-Usuari <|-- Client
-Usuari <|-- Cuiner
-Usuari <|-- Repartidor
-
-NoReg --- Menu
-
-Comanda "1" --> "1" Pagament
+Usuari <|-* Client
+Usuari <|-* Cuiner
+Usuari <|-* Repartidor
+NoReg "1"-->"*" Usuari
+Usuari --- Menu : 1..1
+Menu *-- Plat : 1..*
+Client "*"---"*" Valoracio
+Valoracio "1"--*"1" Comanda 
+Comanda "1"*--"1" Enviament
+Repartidor --> Enviament
+Subscripcio "1"--*"1" Client
+PropostaPlat --* Client
+PropostaPlat --* Cuiner
+PropostaPlat "*"*--"*" XatPrivat
+Comanda *-- EstatComanda
+Client *-- TipusRecollida
+Pagament *-- EstatPagament
+Usuari --> Comanda
+' Metodes de Pagament'
+Comanda "1" *-> "1" Pagament
 Pagament "*" --> "1" MetodePagament
 MetodePagament <|-- TargetaBancaria
 MetodePagament <|-- CompteBancari
 MetodePagament <|-- PayPal
-
-
-
-
 
 @enduml
