@@ -1,0 +1,27 @@
+@startuml us-overview-repartidor
+skinparam actorStyle awesome
+left to right direction
+
+title Panorama — repartidor\n(totes les accions)
+
+actor "Repartidor" as actorRepartidor
+actor "Client" as actorClient
+actor "Mapa / ubicació" as Mapa
+actor "Passarel·la de pagament" as Pay
+
+rectangle "Aplicació (rol repartidor)" {
+  usecase "Fer el lliurament\nquan toca" as R1
+  usecase "Mostrar la meva posició\nal mapa del client" as R2
+  usecase "Rebre la part que toca\nquan es confirma el pagament" as R3
+}
+
+actorRepartidor --> R1
+actorRepartidor --> R2
+actorRepartidor --> R3
+
+actorClient --> R2 : segueix
+
+R2 ..> Mapa
+R3 ..> Pay
+
+@enduml

@@ -1,0 +1,45 @@
+@startuml us-overview-servei
+skinparam actorStyle awesome
+left to right direction
+
+title Panorama — cuiner i repartidor\n(totes les accions de servei)
+
+actor "Cuiner" as actorCuiner
+actor "Repartidor" as actorRepartidor
+actor "Client" as actorClient
+actor "Mapa / ubicació" as Mapa
+actor "Passarel·la de pagament" as Pay
+
+rectangle "Funcionalitat del cuiner" {
+  usecase "Indicar disponibilitat\ni hora de comandes" as K1
+  usecase "Definir com es pot recollir\n(repartidor / cuiner / client)" as K2
+  usecase "Veure propostes de plats dels clients" as K3
+  usecase "Acceptar una proposta" as K4
+  usecase "Parlar amb el client per xat" as K5
+  usecase "Rebre diners al compte\nquan es paga una comanda" as K6
+}
+rectangle "Funcionalitat del repartidor" {
+  usecase "Fer el lliurament\nquan toca" as R1
+  usecase "Mostrar la meva posició\nal mapa del client" as R2
+  usecase "Rebre la part que toca\nquan es confirma el pagament" as R3
+}
+
+actorCuiner --> K1
+actorCuiner --> K2
+actorCuiner --> K3
+actorCuiner --> K4
+actorCuiner --> K5
+actorCuiner --> K6
+
+actorRepartidor --> R1
+actorRepartidor --> R2
+actorRepartidor --> R3
+
+actorClient --> K5
+actorClient --> R2 : segueix
+
+K6 ..> Pay
+R3 ..> Pay
+R2 ..> Mapa
+
+@enduml
