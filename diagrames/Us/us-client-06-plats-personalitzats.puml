@@ -1,0 +1,17 @@
+@startuml us-client-06-plats-personalitzats
+skinparam actorStyle awesome
+left to right direction
+
+title Client — Plats personalitzats
+
+actor Client
+
+usecase "Proposar un plat personalitzat" as UC1
+usecase "Eliminar una proposta\n(encara no acceptada)" as UC2
+usecase "Xat amb el cuiner\n(proposta acceptada)" as UC3
+
+Client --> UC1
+Client --> UC2
+Client --> UC3
+
+@enduml

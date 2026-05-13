@@ -1,0 +1,19 @@
+@startuml us-client-02-comanda-historial
+skinparam actorStyle awesome
+left to right direction
+
+title Client — Comandes i historial
+
+actor Client
+
+usecase "Fer una comanda\n(màx. 3 actives)" as UC1
+usecase "Veure historial de comandes" as UC2
+usecase "Repetir una comanda anterior" as UC3
+usecase "Veure les meves valoracions" as UC4
+
+Client --> UC1
+Client --> UC2
+Client --> UC3
+Client --> UC4
+
+@enduml

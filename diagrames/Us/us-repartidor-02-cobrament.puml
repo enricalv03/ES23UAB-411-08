@@ -1,0 +1,15 @@
+@startuml us-repartidor-02-cobrament
+skinparam actorStyle awesome
+left to right direction
+
+title Repartidor — Cobrament
+
+actor Repartidor
+actor "Passarel·la de pagament" as Pay <<system>>
+
+usecase "Rebre la part que toca\nquan es confirma el pagament" as UC1
+
+Repartidor --> UC1
+UC1 ..> Pay
+
+@enduml

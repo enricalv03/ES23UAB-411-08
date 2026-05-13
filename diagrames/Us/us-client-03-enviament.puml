@@ -1,0 +1,19 @@
+@startuml us-client-03-enviament
+skinparam actorStyle awesome
+left to right direction
+
+title Client — Recollida i seguiment
+
+actor Client
+actor "Mapa / ubicació" as Mapa <<system>>
+
+usecase "Triar com recollir la comanda" as UC1
+usecase "Veure cost d'enviament" as UC2
+usecase "Seguir l'enviament al mapa" as UC3
+
+Client --> UC1
+Client --> UC2
+Client --> UC3
+UC3 ..> Mapa
+
+@enduml

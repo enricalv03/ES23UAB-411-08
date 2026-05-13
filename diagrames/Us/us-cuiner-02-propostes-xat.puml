@@ -1,0 +1,19 @@
+@startuml us-cuiner-02-propostes-xat
+skinparam actorStyle awesome
+left to right direction
+
+title Cuiner — Propostes i xat
+
+actor Cuiner
+actor Client
+
+usecase "Veure propostes de plats dels clients" as UC1
+usecase "Acceptar una proposta" as UC2
+usecase "Parlar amb el client per xat" as UC3
+
+Cuiner --> UC1
+Cuiner --> UC2
+Cuiner --> UC3
+Client --> UC3
+
+@enduml

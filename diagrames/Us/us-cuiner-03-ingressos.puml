@@ -1,0 +1,15 @@
+@startuml us-cuiner-03-ingressos
+skinparam actorStyle awesome
+left to right direction
+
+title Cuiner — Cobraments
+
+actor Cuiner
+actor "Passarel·la de pagament" as Pay <<system>>
+
+usecase "Rebre diners al compte\nquan es paga una comanda" as UC1
+
+Cuiner --> UC1
+UC1 ..> Pay
+
+@enduml
