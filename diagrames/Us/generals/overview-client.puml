@@ -1,65 +1,63 @@
 @startuml us-overview-client
-skinparam actorStyle awesome
+skinparam actorStyle stickman
 left to right direction
 
-title Panorama — client\n
+title Cas d'ús — client
 
 actor Client
 actor "Mapa / ubicació" as Mapa
 actor "Passarel·la de pagament" as Pay
 
+usecase "Veure plats/menús o cuiners actius" as C1
+usecase "Reservar comanda per quan el cuiner estigui disponible" as C4
 
-package "Exploració" {
-  usecase "Veure plats/menús o cuiners actius" as C1
-  usecase "Veure resultats ordenats per distància" as C2
-  usecase "Veure tots els plats d'un cuiner" as C3
-  usecase "Reservar comanda per quan el cuiner estigui disponible" as C4
-}
-package "Comandes i historial" {
-  usecase "Fer una comanda\n(màx. 3 actives)" as C5
-  usecase "Veure historial de comandes" as C6
-  usecase "Repetir una comanda anterior" as C7
-  usecase "Veure les meves valoracions" as C8
-}
-package "Recollida i seguiment" {
-  usecase "Triar com recollir la comanda" as C9
-  usecase "Veure cost d'enviament" as C10
-  usecase "Seguir l'enviament al mapa" as C11
-}
-package "Pagament" {
-  usecase "Pagar una comanda" as C12
-  usecase "Guardar mètode de pagament al perfil" as C13
-}
-package "Valoracions i fidelització" {
-  usecase "Valorar una comanda rebuda" as C14
-  usecase "Subscriure's a un pla mensual" as C15
-  usecase "Usar punts i descomptes\n(si està subscrit)" as C16
-}
-package "Plats personalitzats" {
-  usecase "Proposar un plat personalitzat" as C17
-  usecase "Eliminar una proposta\n(encara no acceptada)" as C18
-  usecase "Xat amb el cuiner\n(proposta acceptada)" as C19
-}
+usecase "Fer una comanda\n(màx. 3 actives)" as C5
+usecase "Veure historial de comandes" as C6
+usecase "Repetir una comanda anterior" as C7
+usecase "Veure les meves valoracions" as C8
+
+'usecase "Triar com recollir la comanda" as C9
+usecase "Veure cost d'enviament" as C10
+usecase "Seguir l'enviament al mapa" as C11
+
+usecase "Pagar una comanda" as C12
+'usecase "Guardar mètode de pagament al perfil" as C13
+
+usecase "Valorar una comanda rebuda" as C14
+usecase "Subscriure's a un pla mensual" as C15
+usecase "Gestió de perfil" as C20
+usecase "Usar punts i descomptes\n(si està subscrit)" as C16
+
+usecase "Proposar un plat personalitzat" as C17
+usecase "Xat amb el cuiner\n(proposta acceptada)" as C19
+
 
 Client --> C1
-Client --> C2
-Client --> C3
 Client --> C4
 Client --> C5
 Client --> C6
 Client --> C7
 Client --> C8
-Client --> C9
 Client --> C10
 Client --> C11
 Client --> C12
-Client --> C13
+'Client --> C13
 Client --> C14
-Client --> C15
 Client --> C16
 Client --> C17
-Client --> C18
 Client --> C19
+Client --> C20
+
+C7 ..> C6 : <<extend>>
+C4 ..> C5 : <<extend>>
+C8 ..> C5 : <<extend>>
+C7 ..> C5 : <<extend>>
+C8 ..> C14 : <<extend>>
+C16 ..> C12 : <<extend>>
+C19 ..> C17 : <<extend>>
+C20 ..> C15 : <<extend>>
+
+C5 ..> C10 : <<include>>
 
 C11 ..> Mapa
 C12 ..> Pay

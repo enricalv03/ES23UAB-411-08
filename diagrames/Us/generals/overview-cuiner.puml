@@ -1,0 +1,33 @@
+@startuml us-overview-servei
+skinparam actorStyle stickman
+left to right direction
+
+title Cas d'us — Cuiner
+
+actor "Cuiner" as actorCuiner
+actor "Passarel·la de pagament" as Pay
+
+
+rectangle "QueMenges"{
+  usecase "Indicar disponibilitat del servei" as K1
+  usecase "Definir opcions disponibles de recollida\n(repartidor / cuiner / client)" as K2
+  usecase "Veure propostes de plats dels clients" as K3
+  usecase "Acceptar una proposta de plat" as K4
+  usecase "Parlar amb el client per xat" as K5
+  usecase "Rebre diners al compte\nquan es paga una comanda" as K6
+}
+
+
+
+actorCuiner --> K1
+actorCuiner --> K2
+actorCuiner --> K3
+actorCuiner --> K4
+actorCuiner --> K5
+actorCuiner --> K6
+
+K5 ..> K4 : <<extend>>
+
+K6 ..> Pay
+
+@enduml

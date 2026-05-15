@@ -1,12 +1,12 @@
 @startuml us-overview-visitant
-skinparam actorStyle awesome
+skinparam actorStyle stickman
 left to right direction
 
-title Panorama — usuari no registrat\n(totes les accions)
+title Cas d'ús — Usuari no registrat
 
 actor "Usuari no registrat" as V
 
-rectangle "Aplicació" {
+rectangle "QueMenges" {
   usecase "Consultar menús i plats" as UC1
   usecase "Registrar-se" as UC2
   usecase "Iniciar sessió" as UC3

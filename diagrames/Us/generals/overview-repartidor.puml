@@ -1,25 +1,26 @@
 @startuml us-overview-repartidor
-skinparam actorStyle awesome
+skinparam actorStyle stickman
 left to right direction
 
-title Panorama — repartidor\n(totes les accions)
+title Cas d'ús — repartidor
 
 actor "Repartidor" as actorRepartidor
-actor "Client" as actorClient
-actor "Mapa / ubicació" as Mapa
+actor "Mapa" as Mapa
 actor "Passarel·la de pagament" as Pay
 
-rectangle "Aplicació (rol repartidor)" {
-  usecase "Fer el lliurament\nquan toca" as R1
-  usecase "Mostrar la meva posició\nal mapa del client" as R2
-  usecase "Rebre la part que toca\nquan es confirma el pagament" as R3
+rectangle "QueMenges" {
+  usecase "Visualitzar comandes d'enviament" as R0
+  usecase "Realitzar lliurament de comanda" as R1
+  usecase "Proporcionar ubicació GPS" as R2
+  usecase "Rebre ingrés per enviament" as R3
 }
 
+actorRepartidor --> R0
 actorRepartidor --> R1
 actorRepartidor --> R2
 actorRepartidor --> R3
 
-actorClient --> R2 : segueix
+
 
 R2 ..> Mapa
 R3 ..> Pay
