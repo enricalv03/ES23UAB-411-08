@@ -1,0 +1,111 @@
+@startuml us-overview-tot
+skinparam actorStyle stickman
+left to right direction
+
+title Cas d'ús — QueMenges
+
+actor "Usuari no registrat" as Visitant
+actor Client
+actor Cuiner
+actor Repartidor
+actor "Mapa / ubicació" as Mapa
+actor "Passarel·la de pagament" as Pay
+
+ 
+  usecase "Consultar menús i plats" as V1
+  usecase "Registrar-se" as V2
+  usecase "Iniciar sessió" as V3
+  
+
+  
+  usecase "Veure plats/menús o cuiners actius" as C1
+  usecase "Reservar comanda per quan el cuiner estigui disponible" as C4
+  usecase "Fer una comanda\n(màx. 3 actives)" as C5
+  usecase "Veure historial de comandes" as C6
+  usecase "Repetir una comanda anterior" as C7
+  usecase "Veure les meves valoracions" as C8
+  usecase "Veure cost d'enviament" as C10
+  usecase "Seguir l'enviament al mapa" as C11
+  usecase "Pagar una comanda" as C12
+  usecase "Valorar una comanda rebuda" as C14
+  usecase "Subscriure's a un pla mensual" as C15
+  usecase "Gestió de perfil" as C20
+  usecase "Usar punts i descomptes\n(si està subscrit)" as C16
+  usecase "Proposar un plat personalitzat" as C17
+
+
+  
+  usecase "Indicar disponibilitat del servei" as K1
+  usecase "Definir opcions disponibles de recollida\n(repartidor / cuiner / client)" as K2
+  usecase "Veure propostes de plats dels clients" as K3
+  usecase "Acceptar una proposta de plat" as K4
+  usecase "Rebre diners al compte\nquan es paga una comanda" as K6
+
+
+
+  usecase "Visualitzar comandes d'enviament" as R0
+  usecase "Realitzar lliurament de comanda" as R1
+  usecase "Proporcionar ubicació GPS" as R2
+  usecase "Rebre ingrés per enviament" as R3
+
+
+  usecase "Xat cuiner-client\n(proposta acceptada)" as Xat
+
+' --- Visitant ---
+Visitant --> V1
+Visitant --> V2
+Visitant --> V3
+
+' --- Client ---
+Client --> C1
+Client --> C4
+Client --> C5
+Client --> C6
+Client --> C7
+Client --> C8
+Client --> C10
+Client --> C11
+Client --> C12
+Client --> C14
+Client --> C16
+Client --> C17
+Client --> C20
+Client --> Xat
+Client --> R2 : segueix
+
+' --- Cuiner ---
+Cuiner --> K1
+Cuiner --> K2
+Cuiner --> K3
+Cuiner --> K4
+Cuiner --> Xat
+Cuiner --> K6
+
+' --- Repartidor ---
+Repartidor --> R0
+Repartidor --> R1
+Repartidor --> R2
+Repartidor --> R3
+
+' --- Relacions Client (overview-client) ---
+C7 ..> C6 : <<extend>>
+C4 ..> C5 : <<extend>>
+C8 ..> C5 : <<extend>>
+C7 ..> C5 : <<extend>>
+C8 ..> C14 : <<extend>>
+C16 ..> C12 : <<extend>>
+C20 ..> C15 : <<extend>>
+C5 ..> C10 : <<include>>
+
+' --- Relacions compartides (client + cuiner) ---
+Xat ..> C17 : <<extend>>
+Xat ..> K4 : <<extend>>
+
+' --- Actors externs ---
+C11 ..> Mapa
+R2 ..> Mapa
+C12 ..> Pay
+K6 ..> Pay
+R3 ..> Pay
+
+@enduml
