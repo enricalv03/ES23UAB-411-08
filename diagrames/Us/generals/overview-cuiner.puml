@@ -27,6 +27,7 @@ actorCuiner --> K5
 actorCuiner --> K6
 
 K5 ..> K4 : <<extend>>
+'K3 ..> K5 : <<extend>>
 
 K6 ..> Pay
 

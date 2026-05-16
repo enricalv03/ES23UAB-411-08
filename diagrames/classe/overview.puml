@@ -1,0 +1,156 @@
+@startuml diagrama-classe-overview
+
+top to bottom direction
+
+title Diagrama de classes - QueMenges (visio general)
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+  ArrowColor #8B0000
+  FontColor black
+}
+skinparam abstractClass {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+}
+skinparam arrow {
+  Color #8B0000
+}
+skinparam note {
+  BackgroundColor #FFFEF0
+  BorderColor #8B0000
+}
+
+abstract class usuari {
+  id
+  email
+  nom
+  iniciar_sessio()
+  tancar_sessio()
+}
+
+class usuariNoRegistrat {
+  consultar_menus()
+  consultar_plats()
+  registrar()
+  iniciar_sessio()
+}
+
+class client {
+  fer_comanda()
+  reservar_comanda()
+  veure_historial()
+  repetir_comanda()
+  valorar_comanda()
+  proposar_plat()
+}
+
+class cuiner {
+  disponible
+  hora_disponible
+  actualitzar_disponibilitat()
+  configurar_recollida()
+  veure_propostes()
+  acceptar_proposta()
+}
+
+class repartidor {
+  veure_comandes_enviament()
+  realitzar_lliurament()
+  enviar_ubicacio_gps()
+}
+
+class menu {
+  nom
+  consultar()
+}
+
+class plat {
+  nom
+  preu
+  consultar()
+}
+
+class comanda {
+  estat
+  import_total
+  data
+  calcular_import()
+  confirmar()
+}
+
+class enviament {
+  tipus_recollida
+  cost_enviament
+  calcular_cost()
+}
+
+class pagament {
+  import_pagament
+  estat
+  pagar()
+  confirmar_pagament()
+}
+
+class valoracio {
+  puntuacio
+  puntualitat
+  valorar()
+}
+
+class proposta_plat {
+  descripcio
+  estat
+  proposar()
+  acceptar()
+}
+
+class xat {
+  enviar_missatge()
+}
+
+class subscripcio {
+  activa
+  quota_mensual
+  activar_pla()
+  aplicar_descompte()
+}
+
+usuari <|-- client
+usuari <|-- cuiner
+usuari <|-- repartidor
+
+usuariNoRegistrat ..> usuari : registre
+usuariNoRegistrat ..> menu
+usuariNoRegistrat ..> plat
+client ..> menu
+client ..> plat
+
+cuiner "1" *-- "0..*" menu
+menu "1" *-- "1..*" plat
+
+client "1" -- "0..*" comanda
+cuiner "1" -- "0..*" comanda
+
+comanda "1" *-- "1" pagament
+comanda "1" *-- "0..1" enviament
+comanda "0..1" -- "1" valoracio
+
+repartidor "0..1" -- "0..*" enviament
+
+client "1" -- "0..*" proposta_plat
+cuiner "1" -- "0..*" proposta_plat
+proposta_plat "1" *-- "0..1" xat
+
+client "1" -- "0..1" subscripcio
+
+note right of pagament
+  Actors externs:
+  Passarella de pagament
+  Mapa / GPS
+end note
+
+@enduml
