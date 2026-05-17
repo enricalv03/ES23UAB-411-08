@@ -135,9 +135,9 @@ menu "1" *-- "1..*" plat
 client "1" -- "0..*" comanda
 cuiner "1" -- "0..*" comanda
 
-comanda "1" *-- "1" pagament
+comanda "1" *-- "0..1" pagament
 comanda "1" *-- "0..1" enviament
-comanda "0..1" -- "1" valoracio
+comanda "1" *-- "0..1" valoracio
 
 repartidor "0..1" -- "0..*" enviament
 
