@@ -1,0 +1,28 @@
+@startuml seq-overview-repartidor
+title Diagrama de sequencia - Overview repartidor
+
+actor Repartidor as R
+participant "Sistema QueMenges" as S
+participant Mapa as M
+actor "Passarella pagament" as Pay
+actor Client as Cl
+
+R -> S: visualitzar comandes d enviament
+S --> R: llistat comandes
+
+R -> S: iniciar lliurament
+R -> S: enviar ubicacio GPS
+S -> M: actualitzar posicio
+S -> Cl: mostrar al mapa
+
+R -> S: confirmar lliurament
+S -> Cl: comanda rebuda
+S --> R: lliurament completat
+
+Cl -> S: pagar comanda
+S -> Pay: confirmar transaccio
+Pay --> S: pagament OK
+S -> R: ingressar part repartidor
+S --> R: notificacio ingres
+
+@enduml

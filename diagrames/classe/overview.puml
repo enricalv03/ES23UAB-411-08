@@ -153,4 +153,8 @@ note right of pagament
   Mapa / GPS
 end note
 
+'client i commanda taula historial entre mig
+'plats + ingredients + alergens taules diferents que apuntin a plat
+'
+
 @enduml

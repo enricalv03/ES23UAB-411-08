@@ -1,0 +1,16 @@
+@startuml seq-overview-visitant
+title Diagrama de sequencia - Overview visitant
+
+actor "Usuari no registrat" as V
+participant "Sistema QueMenges" as S
+
+V -> S: consultar menus i plats
+S --> V: mostrar catalog
+
+V -> S: registrar compte
+S --> V: compte creat
+
+V -> S: iniciar sessio
+S --> V: acces al sistema
+
+@enduml

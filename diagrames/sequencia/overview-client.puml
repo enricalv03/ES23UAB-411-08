@@ -1,0 +1,32 @@
+@startuml seq-overview-client
+title Diagrama de sequencia - Overview client
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Mapa / ubicacio" as M
+actor "Passarella pagament" as Pay
+actor Cuiner as C
+
+Cl -> S: veure plats/menus o cuiners actius
+S --> Cl: llistat
+
+Cl -> S: fer comanda
+S -> S: calcular cost enviament
+S --> Cl: import total
+Cl -> S: confirmar comanda
+S -> C: notificar comanda
+
+Cl -> S: pagar comanda
+S -> Pay: processar pagament
+Pay --> S: pagament OK
+S --> Cl: pagament confirmat
+
+Cl -> S: seguir enviament al mapa
+S -> M: obtenir ubicacio
+M --> S: coordenades
+S --> Cl: mostrar posicio
+
+Cl -> S: valorar comanda rebuda
+S --> Cl: valoracio guardada
+
+@enduml

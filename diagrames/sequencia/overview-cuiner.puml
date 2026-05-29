@@ -1,0 +1,32 @@
+@startuml seq-overview-cuiner
+title Diagrama de sequencia - Overview cuiner
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+actor "Passarella pagament" as Pay
+actor Client as Cl
+
+C -> S: indicar disponibilitat del servei
+S --> C: estat actualitzat
+
+C -> S: definir opcions de recollida
+S --> C: opcions desades
+
+C -> S: veure propostes de plats
+S --> C: llistat propostes
+
+C -> S: acceptar proposta de plat
+S -> Cl: notificar acceptacio
+
+C -> S: parlar amb el client per xat
+S -> Cl: lliurar missatge
+Cl -> S: resposta del client
+S --> C: mostrar conversa
+
+Cl -> S: pagar comanda
+S -> Pay: confirmar transaccio
+Pay --> S: pagament OK
+S -> C: ingressar diners al compte
+S --> C: notificacio ingres
+
+@enduml
