@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-xat-cuiner
+title DS - Xat amb el cuiner
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor Cuiner as C
+
+Cl -> S: obrir xat
+Cl -> S: enviar missatge
+S -> C: lliurar missatge
+C -> S: respondre
+S --> Cl: mostrar resposta
+
+@enduml

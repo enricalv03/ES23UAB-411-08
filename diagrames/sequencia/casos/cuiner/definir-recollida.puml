@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-definir-recollida
+title DS - Definir opcions de recollida
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+
+C -> S: seleccionar opcions\n(repartidor / cuiner / client)
+S -> S: desar configuracio
+S --> C: opcions actives
+
+@enduml

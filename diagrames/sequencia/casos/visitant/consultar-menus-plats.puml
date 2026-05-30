@@ -1,0 +1,10 @@
+@startuml DiagramUnamed-consultar-menus-plats
+title DS - Consultar menus i plats
+
+actor "Usuari no registrat" as V
+participant "Sistema QueMenges" as S
+
+V -> S: consultar catalog
+S --> V: mostrar menus i plats
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-xat-client
+title DS - Parlar amb el client per xat
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+actor Client as Cl
+
+C -> S: obrir xat de la comanda
+C -> S: enviar missatge
+S -> Cl: lliurar missatge
+Cl -> S: respondre
+S --> C: mostrar resposta
+
+@enduml

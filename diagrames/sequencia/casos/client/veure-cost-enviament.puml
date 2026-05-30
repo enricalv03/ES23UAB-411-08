@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-veure-cost-enviament
+title DS - Veure cost d enviament
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: seleccionar tipus recollida
+S -> S: calcular distancia i cost
+S --> Cl: mostrar cost enviament
+
+@enduml

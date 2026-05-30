@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-indicar-disponibilitat
+title DS - Indicar disponibilitat del servei
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+
+C -> S: obrir configuracio disponibilitat
+C -> S: indicar disponible o hora futura
+S -> S: desar estat
+S --> C: disponibilitat actualitzada
+
+@enduml

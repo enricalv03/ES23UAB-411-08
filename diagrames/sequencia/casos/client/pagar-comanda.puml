@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-pagar-comanda
+title DS - Pagar una comanda
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Passarella pagament" as Pay
+
+Cl -> S: iniciar pagament
+S -> Pay: processar transaccio
+Pay --> S: pagament OK
+S -> S: actualitzar estat comanda
+S --> Cl: pagament confirmat
+
+@enduml

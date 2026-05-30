@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-subscriure-pla
+title DS - Subscriure s a un pla mensual
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Passarella pagament" as Pay
+
+Cl -> S: seleccionar pla mensual
+S -> Pay: cobrar quota
+Pay --> S: pagament OK
+S -> S: activar subscripcio
+S --> Cl: subscripcio activa
+
+@enduml

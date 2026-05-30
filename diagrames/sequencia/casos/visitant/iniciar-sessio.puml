@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-iniciar-sessio
+title DS - Iniciar sessio
+
+actor "Usuari no registrat" as V
+participant "Sistema QueMenges" as S
+
+V -> S: introduir credencials
+S -> S: validar usuari
+S --> V: sessio iniciada
+
+@enduml

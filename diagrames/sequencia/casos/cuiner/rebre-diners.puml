@@ -1,0 +1,15 @@
+@startuml DiagramUnamed-rebre-diners
+title DS - Rebre diners al compte
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Passarella pagament" as Pay
+actor Cuiner as C
+
+Cl -> S: pagar comanda
+S -> Pay: confirmar transaccio
+Pay --> S: pagament OK
+S -> C: ingressar import al compte
+S --> C: notificacio ingres
+
+@enduml

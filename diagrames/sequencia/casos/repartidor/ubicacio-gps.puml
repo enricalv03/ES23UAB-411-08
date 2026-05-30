@@ -1,0 +1,13 @@
+@startuml DiagramUnamed-ubicacio-gps
+title DS - Proporcionar ubicacio GPS
+
+actor Repartidor as R
+participant "Sistema QueMenges" as S
+actor Mapa as M
+actor Client as Cl
+
+R -> S: enviar coordenades GPS
+S -> M: actualitzar posicio
+S -> Cl: mostrar posicio al mapa
+
+@enduml

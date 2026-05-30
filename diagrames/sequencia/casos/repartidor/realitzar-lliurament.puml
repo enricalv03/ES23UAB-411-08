@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-realitzar-lliurament
+title DS - Realitzar lliurament de comanda
+
+actor Repartidor as R
+participant "Sistema QueMenges" as S
+actor Client as Cl
+
+R -> S: seleccionar comanda
+R -> S: confirmar lliurament
+S -> S: actualitzar estat comanda
+S -> Cl: notificar comanda rebuda
+S --> R: lliurament completat
+
+@enduml

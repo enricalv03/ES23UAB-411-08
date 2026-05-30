@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-registrar-se
+title DS - Registrar-se
+
+actor "Usuari no registrat" as V
+participant "Sistema QueMenges" as S
+
+V -> S: omplir formulari registre
+S -> S: validar dades
+S -> S: crear compte
+S --> V: confirmacio registre
+
+@enduml

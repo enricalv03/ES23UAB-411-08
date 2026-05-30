@@ -1,0 +1,13 @@
+@startuml DiagramUnamed-proposar-plat
+title DS - Proposar plat personalitzat
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor Cuiner as C
+
+Cl -> S: crear proposta de plat
+S -> S: desar proposta pendent
+S -> C: notificar nova proposta
+S --> Cl: proposta enviada
+
+@enduml

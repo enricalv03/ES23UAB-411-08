@@ -1,0 +1,16 @@
+@startuml DiagramUnamed-fer-comanda
+title DS - Fer una comanda (max. 3 actives)
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor Cuiner as C
+
+Cl -> S: seleccionar plats i recollida
+S -> S: comprovar limit comandes actives
+S -> S: calcular cost enviament
+S --> Cl: mostrar import total
+Cl -> S: confirmar comanda
+S -> C: notificar nova comanda
+S --> Cl: comanda creada
+
+@enduml

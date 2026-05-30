@@ -1,0 +1,13 @@
+@startuml DiagramUnamed-seguir-enviament
+title DS - Seguir enviament al mapa
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Mapa / ubicacio" as M
+
+Cl -> S: obrir seguiment comanda
+S -> M: obtenir ubicacio repartidor/cuiner
+M --> S: coordenades
+S --> Cl: mostrar posicio al mapa
+
+@enduml

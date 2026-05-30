@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-gestio-perfil
+title DS - Gestio de perfil
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: obrir perfil
+Cl -> S: modificar dades
+S -> S: validar i desar
+S --> Cl: perfil actualitzat
+
+@enduml

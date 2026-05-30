@@ -1,0 +1,15 @@
+@startuml DiagramUnamed-rebre-ingressos
+title DS - Rebre ingres per enviament
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+actor "Passarella pagament" as Pay
+actor Repartidor as R
+
+Cl -> S: pagar comanda
+S -> Pay: confirmar transaccio
+Pay --> S: pagament OK
+S -> R: ingressar part repartidor
+S --> R: notificacio ingres
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml DiagramUnamed-repetir-comanda
+title DS - Repetir comanda anterior
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: seleccionar comanda de l historial
+S -> S: copiar detalls comanda
+S --> Cl: comanda preparada
+Cl -> S: confirmar comanda
+S --> Cl: comanda repetida
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-reservar-comanda
+title DS - Reservar comanda (cuiner no disponible)
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: seleccionar cuiner i hora futura
+S -> S: comprovar disponibilitat
+S -> S: crear reserva
+S --> Cl: reserva confirmada
+
+@enduml

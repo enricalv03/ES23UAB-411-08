@@ -1,0 +1,14 @@
+@startuml DiagramUnamed-acceptar-proposta
+title DS - Acceptar proposta de plat
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+actor Client as Cl
+
+C -> S: seleccionar proposta
+C -> S: confirmar acceptacio
+S -> S: marcar proposta acceptada
+S -> Cl: notificar acceptacio
+S --> C: proposta acceptada
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-visualitzar-comandes
+title DS - Visualitzar comandes d enviament
+
+actor Repartidor as R
+participant "Sistema QueMenges" as S
+
+R -> S: obrir llistat enviaments
+S -> S: filtrar comandes assignades
+S --> R: mostrar comandes pendents
+
+@enduml

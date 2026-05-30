@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-valorar-comanda
+title DS - Valorar comanda rebuda
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: seleccionar comanda completada
+Cl -> S: enviar puntuacio i comentari
+S -> S: desar valoracio
+S --> Cl: valoracio registrada
+
+@enduml

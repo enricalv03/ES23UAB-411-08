@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-veure-propostes
+title DS - Veure propostes de plats
+
+actor Cuiner as C
+participant "Sistema QueMenges" as S
+
+C -> S: obrir menu propostes
+S -> S: obtenir propostes pendents
+S --> C: llistat propostes
+
+@enduml

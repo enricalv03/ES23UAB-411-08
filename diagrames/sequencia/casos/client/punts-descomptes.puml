@@ -1,0 +1,12 @@
+@startuml DiagramUnamed-punts-descomptes
+title DS - Usar punts i descomptes
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: iniciar pagament
+S -> S: comprovar subscripcio activa
+S -> S: aplicar punts o descompte
+S --> Cl: import actualitzat
+
+@enduml

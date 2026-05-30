@@ -1,0 +1,11 @@
+@startuml DiagramUnamed-veure-historial
+title DS - Veure historial de comandes
+
+actor Client as Cl
+participant "Sistema QueMenges" as S
+
+Cl -> S: demanar historial
+S -> S: obtenir comandes del client
+S --> Cl: mostrar historial
+
+@enduml
