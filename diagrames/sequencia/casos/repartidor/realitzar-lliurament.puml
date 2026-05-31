@@ -1,14 +1,28 @@
-@startuml DiagramUnamed-realitzar-lliurament
-title DS - Realitzar lliurament de comanda
+@startuml
+title Diagrama de seqüència - Realitzar lliurament de comanda
 
-actor Repartidor as R
-participant "Sistema QueMenges" as S
-actor Client as Cl
+actor Repartidor
+actor Client
 
-R -> S: seleccionar comanda
-R -> S: confirmar lliurament
-S -> S: actualitzar estat comanda
-S -> Cl: notificar comanda rebuda
-S --> R: lliurament completat
+participant "GestorComandes\n:Control" as Gestor
+participant "Comanda\n:Entitat" as ComandaDB
 
+Repartidor -> Gestor: seleccionarComanda()
+activate Gestor
+
+Gestor -> ComandaDB: obtenirEstat()
+activate ComandaDB
+ComandaDB --> Gestor: estat = "recollida"
+deactivate ComandaDB
+
+Repartidor -> Gestor: confirmarLliurament()
+Gestor -> ComandaDB: actualitzarEstat()
+activate ComandaDB
+ComandaDB --> Gestor: estatActualitzat
+deactivate ComandaDB
+
+Gestor -> Client: notificarComandaRebuda()
+Gestor --> Repartidor: confirmacioLliurament()
+
+deactivate Gestor
 @enduml
