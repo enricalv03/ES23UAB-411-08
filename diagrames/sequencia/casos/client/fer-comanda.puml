@@ -1,16 +1,34 @@
-@startuml DiagramUnamed-fer-comanda
-title DS - Fer una comanda (max. 3 actives)
+@startuml
+title Diagrama de seqüència - Fer una comanda (màxim 3 actives)
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor Cuiner as C
+actor Client
+actor Cuiner
 
-Cl -> S: seleccionar plats i recollida
-S -> S: comprovar limit comandes actives
-S -> S: calcular cost enviament
-S --> Cl: mostrar import total
-Cl -> S: confirmar comanda
-S -> C: notificar nova comanda
-S --> Cl: comanda creada
+participant "GestorComandes\n:Control" as Gestor
+participant "Client\n:Entitat" as ClientEntitat
+participant "Comanda\n:Entitat" as ComandaEntitat
 
+Client -> Gestor: seleccionarPlats()
+activate Gestor
+
+Gestor -> ClientEntitat: verificarLimitComandesActives()
+activate ClientEntitat
+ClientEntitat --> Gestor: numComandesActives
+deactivate ClientEntitat
+
+alt numComandesActives >= 3
+    Gestor --> Client: error()
+else numComandesActives < 3
+    Gestor -> Gestor: calcularCostEnviament()
+    Gestor --> Client: mostrarResum()
+    Client -> Gestor: confirmarComanda()
+    Gestor -> ComandaEntitat: crearComanda()
+    activate ComandaEntitat
+    ComandaEntitat --> Gestor: idComanda
+    deactivate ComandaEntitat
+    Gestor -> Cuiner: notificarNovaComanda()
+    Gestor --> Client: comandaCreada()
+end
+
+deactivate Gestor
 @enduml
