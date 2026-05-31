@@ -1,15 +1,55 @@
-@startuml DiagramUnamed-rebre-diners
-title DS - Rebre diners al compte
+@startuml
+title Diagrama de seqüència - Rebre diners al compte
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor "Passarella pagament" as Pay
-actor Cuiner as C
+actor Client
+actor "Passarel·la pagament" as Passarella
+actor Cuiner
 
-Cl -> S: pagar comanda
-S -> Pay: confirmar transaccio
-Pay --> S: pagament OK
-S -> C: ingressar import al compte
-S --> C: notificacio ingres
+participant "GestorPagaments\n:Control" as Gestor
+participant "Comanda\n:Entitat" as ComandaDB
+participant "Cuiner\n:Entitat" as CuinerDB
 
+Client -> Gestor: pagarComanda()
+activate Gestor
+
+Gestor -> Passarella: processarPagament()
+activate Passarella
+
+alt pagament exitós
+    Passarella --> Gestor: confirmacioOK()
+    deactivate Passarella
+    
+    Gestor -> ComandaDB: actualitzarEstat()
+    activate ComandaDB
+    ComandaDB --> Gestor: ok
+    deactivate ComandaDB
+    
+    Gestor -> CuinerDB: obtenirCompteBancari()
+    activate CuinerDB
+    CuinerDB --> Gestor: dadesBancaries
+    deactivate CuinerDB
+    
+    Gestor -> Passarella: ingressarImport()
+    activate Passarella
+    Passarella --> Gestor: ingressConfirmat
+    deactivate Passarella
+    
+    opt comanda amb repartidor
+        Gestor -> Passarella: ingressarImport()
+        activate Passarella
+        Passarella --> Gestor: ingresConfirmat
+        deactivate Passarella
+    end
+    
+    Gestor -> Cuiner: notificarIngres()
+    Gestor --> Client: pagamentConfirmat()
+    
+else pagament fallit
+    Passarella --> Gestor: error()
+    deactivate Passarella
+    Gestor -> Cuiner: notificarIntentFallit()
+    Gestor --> Client: errorPagament()
+end
+
+deactivate Gestor
 @enduml
