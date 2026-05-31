@@ -1,14 +1,45 @@
-@startuml DiagramUnamed-pagar-comanda
-title DS - Pagar una comanda
+@startuml
+title Diagrama de seqüència - Pagar una comanda
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor "Passarella pagament" as Pay
+actor Client
+actor "Passarel·la pagament" as Passarella
 
-Cl -> S: iniciar pagament
-S -> Pay: processar transaccio
-Pay --> S: pagament OK
-S -> S: actualitzar estat comanda
-S --> Cl: pagament confirmat
+participant "GestorPagaments\n:Control" as Gestor
+participant "Comanda\n:Entitat" as ComandaEntitat
 
+Client -> Gestor: iniciarPagament()
+activate Gestor
+
+Gestor -> ComandaEntitat: obtenirDetalls()
+activate ComandaEntitat
+ComandaEntitat --> Gestor: import, estat
+deactivate ComandaEntitat
+
+Gestor --> Client: mostrarOpcionsPagament()
+Client -> Gestor: seleccionarMetode()
+
+Gestor -> Passarella: processarPagament()
+activate Passarella
+
+alt pagament exitós
+    Passarella --> Gestor: confirmacioOK()
+    deactivate Passarella
+    Gestor -> ComandaEntitat: actualitzarEstat()
+    activate ComandaEntitat
+    ComandaEntitat --> Gestor: estatActualitzat
+    deactivate ComandaEntitat
+    Gestor --> Client: pagamentConfirmat()
+else pagament fallit
+    Passarella --> Gestor: errorPagament()
+    deactivate Passarella
+    Gestor --> Client: mostrarError()
+    note right of Gestor: El client pot reintentar\n(flux alternatiu)
+    loop reintent
+        Client -> Gestor: reintentarPagament()
+        Gestor -> Passarella: processarPagament()
+        ' es podria afegir més detall, però es simplifica
+    end
+end
+
+deactivate Gestor
 @enduml
