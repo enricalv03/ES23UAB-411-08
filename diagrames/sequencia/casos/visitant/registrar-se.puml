@@ -1,12 +1,29 @@
-@startuml DiagramUnamed-registrar-se
-title DS - Registrar-se
+@startuml
+title Diagrama de seqüència - Registrar-se
 
-actor "Usuari no registrat" as V
-participant "Sistema QueMenges" as S
+actor "Usuari no registrat" as Usuari
 
-V -> S: omplir formulari registre
-S -> S: validar dades
-S -> S: crear compte
-S --> V: confirmacio registre
+participant "GestorUsuaris\n:Control" as Gestor
+participant "Usuari\n:Entitat" as UsuariDB
 
+Usuari -> Gestor: omplirFormulari()
+activate Gestor
+
+Gestor -> UsuariDB: verificarExistencia()
+activate UsuariDB
+UsuariDB --> Gestor: existeix
+deactivate UsuariDB
+
+alt existeix == false
+    Gestor -> Gestor: xifrarContrasenya()
+    Gestor -> UsuariDB: crearCompte()
+    activate UsuariDB
+    UsuariDB --> Gestor: compteCreat
+    deactivate UsuariDB
+    Gestor --> Usuari: confirmacioRegistre()
+else existeix == true
+    Gestor --> Usuari: error()
+end
+
+deactivate Gestor
 @enduml
