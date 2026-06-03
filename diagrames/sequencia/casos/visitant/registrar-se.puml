@@ -3,10 +3,14 @@ title Diagrama de seqüència - Registrar-se
 
 actor "Usuari no registrat" as Usuari
 
-participant "GestorUsuaris\n:Control" as Gestor
-participant "Usuari\n:Entitat" as UsuariDB
+boundary "PantallaRegistre" as Pantalla
+control "GestorUsuaris" as Gestor
+entity "Usuari" as UsuariDB
 
-Usuari -> Gestor: omplirFormulari()
+Usuari -> Pantalla: omplirFormulari()
+activate Pantalla
+
+Pantalla -> Gestor: enviaDadesRegistre()
 activate Gestor
 
 Gestor -> UsuariDB: verificarExistencia()
@@ -20,10 +24,13 @@ alt existeix == false
     activate UsuariDB
     UsuariDB --> Gestor: compteCreat
     deactivate UsuariDB
-    Gestor --> Usuari: confirmacioRegistre()
+    Gestor --> Pantalla: confirmacioRegistre()
+    Pantalla --> Usuari: mostraConfirmacio()
 else existeix == true
-    Gestor --> Usuari: error()
+    Gestor --> Pantalla: error()
+    Pantalla --> Usuari: mostraError()
 end
 
 deactivate Gestor
+deactivate Pantalla
 @enduml
