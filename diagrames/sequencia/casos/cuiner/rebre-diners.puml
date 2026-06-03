@@ -1,15 +1,20 @@
 @startuml
-title Diagrama de seqüència - Rebre diners al compte
+title Diagrama de seqüència - Rebre diners al compte 
 
 actor Client
 actor "Passarel·la pagament" as Passarella
 actor Cuiner
 
-participant "GestorPagaments\n:Control" as Gestor
-participant "Comanda\n:Entitat" as ComandaDB
-participant "Cuiner\n:Entitat" as CuinerDB
+boundary "PantallaPagament" as PantallaClient
+boundary "PantallaCuiner" as PantallaCuiner
+control "GestorPagaments" as Gestor
+entity "Comanda" as ComandaDB
+entity "Cuiner" as CuinerDB
 
-Client -> Gestor: pagarComanda()
+Client -> PantallaClient: pagarComanda()
+activate PantallaClient
+
+PantallaClient -> Gestor: processarPagament()
 activate Gestor
 
 Gestor -> Passarella: processarPagament()
@@ -35,21 +40,31 @@ alt pagament exitós
     deactivate Passarella
     
     opt comanda amb repartidor
-        Gestor -> Passarella: ingressarImport()
+        Gestor -> Passarella: ingressarImport(repartidor)
         activate Passarella
-        Passarella --> Gestor: ingresConfirmat
+        Passarella --> Gestor: ingressConfirmat
         deactivate Passarella
     end
     
-    Gestor -> Cuiner: notificarIngres()
-    Gestor --> Client: pagamentConfirmat()
+    Gestor -> PantallaCuiner: notificarIngres()
+    activate PantallaCuiner
+    PantallaCuiner --> Cuiner: mostraNotificacio()
+    deactivate PantallaCuiner
+    
+    Gestor --> PantallaClient: pagamentConfirmat()
+    PantallaClient --> Client: mostraConfirmacio()
     
 else pagament fallit
     Passarella --> Gestor: error()
     deactivate Passarella
-    Gestor -> Cuiner: notificarIntentFallit()
-    Gestor --> Client: errorPagament()
+    Gestor -> PantallaCuiner: notificarIntentFallit()
+    activate PantallaCuiner
+    PantallaCuiner --> Cuiner: mostraError()
+    deactivate PantallaCuiner
+    Gestor --> PantallaClient: errorPagament()
+    PantallaClient --> Client: mostraError()
 end
 
 deactivate Gestor
+deactivate PantallaClient
 @enduml
