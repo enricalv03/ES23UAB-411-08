@@ -1,14 +1,19 @@
 @startuml
-title Diagrama de seqüència - Fer una comanda (màxim 3 actives)
+title Diagrama de seqüència - Fer una comanda (màxim 3 actives)  
 
 actor Client
 actor Cuiner
 
-participant "GestorComandes\n:Control" as Gestor
-participant "Client\n:Entitat" as ClientEntitat
-participant "Comanda\n:Entitat" as ComandaEntitat
+boundary "PantallaComanda" as PantallaClient
+boundary "PantallaCuiner" as PantallaCuiner
+control "GestorComandes" as Gestor
+entity "Client" as ClientEntitat
+entity "Comanda" as ComandaEntitat
 
-Client -> Gestor: seleccionarPlats()
+Client -> PantallaClient: seleccionarPlats()
+activate PantallaClient
+
+PantallaClient -> Gestor: enviarSeleccioPlats()
 activate Gestor
 
 Gestor -> ClientEntitat: verificarLimitComandesActives()
@@ -17,18 +22,30 @@ ClientEntitat --> Gestor: numComandesActives
 deactivate ClientEntitat
 
 alt numComandesActives >= 3
-    Gestor --> Client: error()
+    Gestor --> PantallaClient: error()
+    PantallaClient --> Client: mostraError()
 else numComandesActives < 3
     Gestor -> Gestor: calcularCostEnviament()
-    Gestor --> Client: mostrarResum()
-    Client -> Gestor: confirmarComanda()
+    Gestor --> PantallaClient: mostrarResum()
+    PantallaClient --> Client: mostraResumComanda()
+    
+    Client -> PantallaClient: confirmarComanda()
+    PantallaClient -> Gestor: confirmacioComanda()
+    
     Gestor -> ComandaEntitat: crearComanda()
     activate ComandaEntitat
     ComandaEntitat --> Gestor: idComanda
     deactivate ComandaEntitat
-    Gestor -> Cuiner: notificarNovaComanda()
-    Gestor --> Client: comandaCreada()
+    
+    Gestor -> PantallaCuiner: notificarNovaComanda()
+    activate PantallaCuiner
+    PantallaCuiner --> Cuiner: mostraNotificacio()
+    deactivate PantallaCuiner
+    
+    Gestor --> PantallaClient: comandaCreada()
+    PantallaClient --> Client: mostraConfirmacio()
 end
 
 deactivate Gestor
+deactivate PantallaClient
 @enduml
