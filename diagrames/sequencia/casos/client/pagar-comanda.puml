@@ -1,13 +1,17 @@
 @startuml
-title Diagrama de seqüència - Pagar una comanda
+title Diagrama de seqüència - Pagar una comanda   
 
 actor Client
 actor "Passarel·la pagament" as Passarella
 
-participant "GestorPagaments\n:Control" as Gestor
-participant "Comanda\n:Entitat" as ComandaEntitat
+boundary "PantallaPagament" as Pantalla
+control "GestorPagaments" as Gestor
+entity "Comanda" as ComandaEntitat
 
-Client -> Gestor: iniciarPagament()
+Client -> Pantalla: iniciarPagament()
+activate Pantalla
+
+Pantalla -> Gestor: procesarPagament()
 activate Gestor
 
 Gestor -> ComandaEntitat: obtenirDetalls()
@@ -15,8 +19,11 @@ activate ComandaEntitat
 ComandaEntitat --> Gestor: import, estat
 deactivate ComandaEntitat
 
-Gestor --> Client: mostrarOpcionsPagament()
-Client -> Gestor: seleccionarMetode()
+Gestor --> Pantalla: mostrarOpcionsPagament()
+Pantalla --> Client: mostraOpcions()
+
+Client -> Pantalla: seleccionarMetode()
+Pantalla -> Gestor: enviaMetodePagament()
 
 Gestor -> Passarella: processarPagament()
 activate Passarella
@@ -28,18 +35,22 @@ alt pagament exitós
     activate ComandaEntitat
     ComandaEntitat --> Gestor: estatActualitzat
     deactivate ComandaEntitat
-    Gestor --> Client: pagamentConfirmat()
+    Gestor --> Pantalla: pagamentConfirmat()
+    Pantalla --> Client: mostraConfirmacio()
 else pagament fallit
     Passarella --> Gestor: errorPagament()
     deactivate Passarella
-    Gestor --> Client: mostrarError()
+    Gestor --> Pantalla: mostrarError()
+    Pantalla --> Client: mostraError()
     note right of Gestor: El client pot reintentar\n(flux alternatiu)
     loop reintent
-        Client -> Gestor: reintentarPagament()
+        Client -> Pantalla: reintentarPagament()
+        Pantalla -> Gestor: reintentar()
         Gestor -> Passarella: processarPagament()
         ' es podria afegir més detall, però es simplifica
     end
 end
 
 deactivate Gestor
+deactivate Pantalla
 @enduml
