@@ -1,13 +1,17 @@
 @startuml
-title Diagrama de seqüència - Realitzar lliurament de comanda
+title Diagrama de seqüència - Realitzar lliurament de comanda  
 
 actor Repartidor
 actor Client
 
-participant "GestorComandes\n:Control" as Gestor
-participant "Comanda\n:Entitat" as ComandaDB
+boundary "PantallaLliurament" as Pantalla
+control "GestorComandes" as Gestor
+entity "Comanda" as ComandaDB
 
-Repartidor -> Gestor: seleccionarComanda()
+Repartidor -> Pantalla: seleccionarComanda()
+activate Pantalla
+
+Pantalla -> Gestor: enviaSeleccioComanda()
 activate Gestor
 
 Gestor -> ComandaDB: obtenirEstat()
@@ -15,14 +19,18 @@ activate ComandaDB
 ComandaDB --> Gestor: estat = "recollida"
 deactivate ComandaDB
 
-Repartidor -> Gestor: confirmarLliurament()
+Repartidor -> Pantalla: confirmarLliurament()
+Pantalla -> Gestor: enviaConfirmacioLliurament()
+
 Gestor -> ComandaDB: actualitzarEstat()
 activate ComandaDB
 ComandaDB --> Gestor: estatActualitzat
 deactivate ComandaDB
 
 Gestor -> Client: notificarComandaRebuda()
-Gestor --> Repartidor: confirmacioLliurament()
+Gestor --> Pantalla: confirmacioLliurament()
+Pantalla --> Repartidor: mostraConfirmacio()
 
 deactivate Gestor
+deactivate Pantalla
 @enduml
