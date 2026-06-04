@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de seqüència - Rebre diners al compte 
+title Diagrama de seqüència - Rebre diners al compte (amb timeout)
 
 actor Client
 actor "Passarel·la pagament" as Passarella
@@ -63,6 +63,13 @@ else pagament fallit
     deactivate PantallaCuiner
     Gestor --> PantallaClient: errorPagament()
     PantallaClient --> Client: mostraError()
+    
+else pagament timeout (>7 minuts)
+    Passarella --> Gestor: timeout()
+    deactivate Passarella
+    Gestor --> PantallaClient: errorTimeout()
+    PantallaClient --> Client: mostraErrorTimeout()
+    ' El cuiner no rep notificació (només cancel·lació segons FA-02)
 end
 
 deactivate Gestor
