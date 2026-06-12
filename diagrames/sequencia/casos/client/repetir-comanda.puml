@@ -1,13 +1,43 @@
-@startuml DiagramUnamed-repetir-comanda
-title DS - Repetir comanda anterior
+@startuml
+title Diagrama de seqüència - Repetir una comanda anterior
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
 
-Cl -> S: seleccionar comanda de l historial
-S -> S: copiar detalls comanda
-S --> Cl: comanda preparada
-Cl -> S: confirmar comanda
-S --> Cl: comanda repetida
+boundary "PantallaHistorial" as Pantalla
+control "GestorComandes" as Gestor
+entity "Comanda" as ComandaDB
+entity "Plat" as PlatDB
 
+Client -> Pantalla: seleccionarComandaHistorial()
+activate Pantalla
+
+Pantalla -> Gestor: sollicitarRepeticio()
+activate Gestor
+
+Gestor -> ComandaDB: obtenirPlatsComanda()
+activate ComandaDB
+ComandaDB --> Gestor: llistatPlatsOriginal
+deactivate ComandaDB
+
+Gestor -> PlatDB: verificarDisponibilitatPlats()
+activate PlatDB
+PlatDB --> Gestor: platsDisponibles, platsNoDisponibles
+deactivate PlatDB
+
+alt totsElsPlatsDisponibles
+    Gestor -> ComandaDB: crearNovaComanda()
+    activate ComandaDB
+    ComandaDB --> Gestor: novaComandaCreada
+    deactivate ComandaDB
+    
+    Gestor --> Pantalla: continuarAmbFerComanda()
+    Pantalla --> Client: redirigirAConfirmacio()
+    
+else hiHaPlatsNoDisponibles
+    Gestor --> Pantalla: informarPlatsNoDisponibles()
+    Pantalla --> Client: mostrarErrorPlatsNoDisponibles()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
