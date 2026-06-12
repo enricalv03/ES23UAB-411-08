@@ -1,11 +1,69 @@
-@startuml DiagramUnamed-veure-plats-cuiners
-title DS - Veure plats/menus o cuiners actius
+@startuml
+title Diagrama de seqüència - Veure plats/menús o cuiners actius
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
+actor "Mapa/Ubicació" as Mapa
 
-Cl -> S: obrir catalog
-S -> S: filtrar cuiners actius i plats
-S --> Cl: mostrar llistat
+boundary "PantallaConsulta" as Pantalla
+control "GestorCatalog" as Gestor
+entity "Cuiner" as CuinerDB
+entity "Plat" as PlatDB
 
+Client -> Pantalla: obrirCatalog()
+activate Pantalla
+
+Pantalla -> Gestor: sol·licitarVisualitzacio()
+activate Gestor
+
+Gestor -> Mapa: obtenirLocalitzacioClient()
+activate Mapa
+
+alt localitzacio obtinguda
+    Mapa --> Gestor: coordenadesClient
+    deactivate Mapa
+    
+    Gestor -> CuinerDB: obtenirCuinersActiusAmbDistancia()
+    activate CuinerDB
+    CuinerDB --> Gestor: llistatCuinersOrdenat
+    deactivate CuinerDB
+    
+    Gestor -> PlatDB: obtenirPlatsActiusPerDistancia()
+    activate PlatDB
+    PlatDB --> Gestor: llistatPlatsOrdenat
+    deactivate PlatDB
+    
+    Gestor --> Pantalla: mostrarOpcionsVista()
+    Pantalla --> Client: mostrarMenuOpcions()
+    
+    Client -> Pantalla: seleccionarVista()
+    Pantalla -> Gestor: obtenirLlistat()
+    
+    alt tipus == "cuiners"
+        Gestor --> Pantalla: retornarLlistatCuiners()
+    else tipus == "plats"
+        Gestor --> Pantalla: retornarLlistatPlats()
+    end
+    
+    Pantalla --> Client: mostrarLlistatOrdenat()
+    
+    opt accedir a plats d'un cuiner
+        Client -> Pantalla: seleccionarCuiner()
+        Pantalla -> Gestor: obtenirPlatsCuiner()
+        Gestor -> PlatDB: filtrarPerCuiner()
+        activate PlatDB
+        PlatDB --> Gestor: llistatPlatsCuiner
+        deactivate PlatDB
+        Gestor --> Pantalla: platsCuiner()
+        Pantalla --> Client: mostrarPlatsCuiner()
+    end
+    
+else localitzacio no obtinguda
+    Mapa --> Gestor: errorLocalitzacio()
+    deactivate Mapa
+    Gestor --> Pantalla: error("No s'ha pogut obtenir la localització")
+    Pantalla --> Client: mostraErrorLocalitzacio()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
