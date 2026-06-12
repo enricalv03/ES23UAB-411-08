@@ -1,11 +1,31 @@
-@startuml DiagramUnamed-veure-valoracions
-title DS - Veure les meves valoracions
+@startuml
+title Diagrama de seqüència - Veure les meves valoracions
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
 
-Cl -> S: obrir valoracions
-S -> S: obtenir valoracions del client
-S --> Cl: mostrar llistat
+boundary "PantallaValoracions" as Pantalla
+control "GestorValoracions" as Gestor
+entity "Valoracio" as ValoracioDB
 
+Client -> Pantalla: obrirValoracions()
+activate Pantalla
+
+Pantalla -> Gestor: sollicitarValoracions()
+activate Gestor
+
+Gestor -> ValoracioDB: obtenirValoracionsClient()
+activate ValoracioDB
+ValoracioDB --> Gestor: llistatValoracions
+deactivate ValoracioDB
+
+alt existeixenValoracions
+    Gestor --> Pantalla: retornarValoracions()
+    Pantalla --> Client: mostrarLlistat()
+else noHiHaValoracions
+    Gestor --> Pantalla: informarSenseValoracions()
+    Pantalla --> Client: mostrarMissatgeInformatiu()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
