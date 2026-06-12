@@ -1,12 +1,64 @@
-@startuml DiagramUnamed-valorar-comanda
-title DS - Valorar comanda rebuda
+@startuml
+title Diagrama de seqüència - Valorar una comanda rebuda
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
 
-Cl -> S: seleccionar comanda completada
-Cl -> S: enviar puntuacio i comentari
-S -> S: desar valoracio
-S --> Cl: valoracio registrada
+boundary "PantallaHistorial" as Pantalla
+control "GestorValoracions" as Gestor
+entity "Comanda" as ComandaDB
+entity "Valoracio" as ValoracioDB
 
+Client -> Pantalla: obrirHistorial()
+activate Pantalla
+
+Pantalla -> Gestor: sollicitarComandesPerValorar()
+activate Gestor
+
+Gestor -> ComandaDB: obtenirComandesRebudesSenseValorar()
+activate ComandaDB
+ComandaDB --> Gestor: llistatComandes
+deactivate ComandaDB
+
+Gestor --> Pantalla: retornarComandes()
+Pantalla --> Client: mostrarComandes()
+
+Client -> Pantalla: seleccionarComanda()
+Pantalla -> Gestor: demanarValorarComanda()
+
+Gestor -> ComandaDB: verificarEstat()
+activate ComandaDB
+ComandaDB --> Gestor: estatComanda, teValoracio
+deactivate ComandaDB
+
+alt estatComanda == "rebuda" and teValoracio == false
+    Gestor --> Pantalla: permetreValoracio()
+    Pantalla --> Client: mostrarFormulari()
+    
+    Client -> Pantalla: enviarPuntuacioComentari()
+    Pantalla -> Gestor: registrarValoracio()
+    
+    Gestor -> ValoracioDB: crearValoracio()
+    activate ValoracioDB
+    ValoracioDB --> Gestor: valoracioConfirmada
+    deactivate ValoracioDB
+    
+    Gestor -> ComandaDB: marcarComandaValorada()
+    activate ComandaDB
+    ComandaDB --> Gestor: ok
+    deactivate ComandaDB
+    
+    Gestor --> Pantalla: valoracioRegistrada()
+    Pantalla --> Client: mostrarConfirmacio()
+    
+else estatComanda != "rebuda"
+    Gestor --> Pantalla: errorComandaNoLliurada()
+    Pantalla --> Client: mostrarError()
+    
+else teValoracio == true
+    Gestor --> Pantalla: errorJaValorada()
+    Pantalla --> Client: mostrarValoracioExistent()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
