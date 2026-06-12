@@ -1,11 +1,31 @@
-@startuml DiagramUnamed-veure-historial
-title DS - Veure historial de comandes
+@startuml
+title Diagrama de seqüència - Veure historial de comandes
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
 
-Cl -> S: demanar historial
-S -> S: obtenir comandes del client
-S --> Cl: mostrar historial
+boundary "PantallaHistorial" as Pantalla
+control "GestorComandes" as Gestor
+entity "Comanda" as ComandaDB
 
+Client -> Pantalla: demanarHistorial()
+activate Pantalla
+
+Pantalla -> Gestor: sollicitarComandes()
+activate Gestor
+
+Gestor -> ComandaDB: obtenirComandesClient()
+activate ComandaDB
+ComandaDB --> Gestor: llistatComandes
+deactivate ComandaDB
+
+alt existeixenComandes
+    Gestor --> Pantalla: retornarComandes()
+    Pantalla --> Client: mostrarHistorial()
+else noHiHaComandes
+    Gestor --> Pantalla: informarSenseComandes()
+    Pantalla --> Client: mostrarMissatgeBuit()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
