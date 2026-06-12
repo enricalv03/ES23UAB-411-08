@@ -1,11 +1,54 @@
-@startuml DiagramUnamed-veure-cost-enviament
-title DS - Veure cost d enviament
+@startuml
+title Diagrama de seqüència - Veure cost d'enviament
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+actor Client
+actor "Mapa/Ubicació" as Mapa
 
-Cl -> S: seleccionar tipus recollida
-S -> S: calcular distancia i cost
-S --> Cl: mostrar cost enviament
+boundary "PantallaComanda" as Pantalla
+control "GestorComandes" as Gestor
+entity "Cuiner" as CuinerDB
+entity "Client" as ClientDB
 
+Client -> Pantalla: seleccionarTipusRecollida()
+activate Pantalla
+
+Pantalla -> Gestor: sollicitarCalculEnviament()
+activate Gestor
+
+Gestor -> Mapa: obtenirCoordenadesCuinerIClient()
+activate Mapa
+
+alt coordenadesObtingudes
+    Mapa --> Gestor: coordenadesCuiner, coordenadesClient
+    deactivate Mapa
+    
+    Gestor -> Gestor: calcularDistanciaManhattan()
+    
+    Gestor -> ClientDB: verificarSubscripcio()
+    activate ClientDB
+    ClientDB --> Gestor: teSubscripcio
+    deactivate ClientDB
+    
+    alt teSubscripcio == true
+        Gestor -> Gestor: aplicarTarifaPlanaGratuïta()
+    else teSubscripcio == false
+        alt tipusRecollida == "domiciliCuiner"
+            Gestor -> Gestor: aplicarGratuit()
+        else tipusRecollida == "enviamentDomicili"
+            Gestor -> Gestor: calcularCostPerDistancia()
+        end
+    end
+    
+    Gestor --> Pantalla: retornarCostEnviament()
+    Pantalla --> Client: mostrarCost()
+    
+else coordenadesNoObtingudes
+    Mapa --> Gestor: errorCoordenades()
+    deactivate Mapa
+    Gestor --> Pantalla: informarErrorLocalitzacio()
+    Pantalla --> Client: mostrarError()
+end
+
+deactivate Gestor
+deactivate Pantalla
 @enduml
