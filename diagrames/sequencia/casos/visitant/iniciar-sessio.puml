@@ -9,3 +9,5 @@ S -> S: validar usuari
 S --> V: sessio iniciada
 
 @enduml
+
+'Crear interfici de commanda en cada usuari
