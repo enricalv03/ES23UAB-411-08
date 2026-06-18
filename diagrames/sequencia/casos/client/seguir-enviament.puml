@@ -1,13 +1,27 @@
-@startuml DiagramUnamed-seguir-enviament
-title DS - Seguir enviament al mapa
+@startuml
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor "Mapa / ubicacio" as M
+title Diagrama de seqüència - Seguir l'enviament al mapa
 
-Cl -> S: obrir seguiment comanda
-S -> M: obtenir ubicacio repartidor/cuiner
-M --> S: coordenades
-S --> Cl: mostrar posicio al mapa
+actor Client
+boundary PantallaSeguiment
+control GestorComandes
+entity Comanda
+boundary "InterfícieMapa" as InterficieMapa
+
+Client -> PantallaSeguiment: obrirDetallComanda()
+PantallaSeguiment -> GestorComandes: sol·licitarSeguiment()
+GestorComandes -> Comanda: obtenirDadesEnviament()
+Comanda --> GestorComandes: dadesEnviament
+GestorComandes -> InterficieMapa: obtenirUbicacio()
+
+alt ubicació disponible
+    InterficieMapa --> GestorComandes: ubicacio
+    GestorComandes --> PantallaSeguiment: retornarSeguiment(estat, ubicacio)
+    PantallaSeguiment --> Client: mostrarMapaIEstat()
+else ubicació no disponible
+    InterficieMapa --> GestorComandes: ubicacioNoDisponible
+    GestorComandes --> PantallaSeguiment: informarUbicacioNoDisponible()
+    PantallaSeguiment --> Client: mostrarMissatge()
+end
 
 @enduml

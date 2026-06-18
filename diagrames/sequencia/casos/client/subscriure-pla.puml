@@ -1,14 +1,37 @@
-@startuml DiagramUnamed-subscriure-pla
-title DS - Subscriure s a un pla mensual
+@startuml
+skinparam defaultFontName Helvetica
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor "Passarella pagament" as Pay
+title Diagrama de sequencia - Subscriure's a un pla mensual
 
-Cl -> S: seleccionar pla mensual
-S -> Pay: cobrar quota
-Pay --> S: pagament OK
-S -> S: activar subscripcio
-S --> Cl: subscripcio activa
+actor Client
+boundary "PantallaSubscripcio" as Pantalla
+control "GestorSubscripcions" as Gestor
+entity "ClientRegistrat" as ClientEntitat
+entity "Subscripcio" as SubscripcioEntitat
+
+Client -> Pantalla: accedirSubscripcio()
+Pantalla -> Gestor: consultarPlaMensual()
+Gestor -> SubscripcioEntitat: obtenirInformacioPla()
+SubscripcioEntitat --> Gestor: informacioPla
+Gestor --> Pantalla: mostrarPlaMensual()
+Pantalla --> Client: mostraInformacioPla()
+
+Client -> Pantalla: confirmarSubscripcio()
+Pantalla -> Gestor: sollicitarSubscripcio()
+Gestor -> ClientEntitat: comprovarSubscripcio()
+ClientEntitat --> Gestor: estatSubscripcio
+
+alt client no subscrit
+    Gestor -> SubscripcioEntitat: registrarSubscripcio()
+    SubscripcioEntitat --> Gestor: subscripcioCreada
+    Gestor -> ClientEntitat: associarSubscripcio()
+    ClientEntitat --> Gestor: subscripcioAssociada
+    Gestor --> Pantalla: subscripcioConfirmada()
+    Pantalla --> Client: mostraConfirmacio()
+else client ja subscrit
+    Gestor --> Pantalla: informarSubscripcioActiva()
+    Pantalla --> Client: mostraMissatge()
+end
 
 @enduml
+

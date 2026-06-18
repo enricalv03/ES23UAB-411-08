@@ -1,12 +1,49 @@
-@startuml DiagramUnamed-gestio-perfil
-title DS - Gestio de perfil
+@startuml
+skinparam defaultFontName Helvetica
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
+title Diagrama de seqüència - Gestió de perfil
 
-Cl -> S: obrir perfil
-Cl -> S: modificar dades
-S -> S: validar i desar
-S --> Cl: perfil actualitzat
+actor Client
+
+boundary "PantallaPerfil" as Pantalla
+control "GestorPerfil" as Gestor
+entity "ClientRegistrat" as ClientEntitat
+
+Client -> Pantalla: accedirPerfil()
+activate Pantalla
+
+Pantalla -> Gestor: consultarPerfil()
+activate Gestor
+
+Gestor -> ClientEntitat: obtenirDadesPerfil()
+activate ClientEntitat
+ClientEntitat --> Gestor: dadesPerfil
+deactivate ClientEntitat
+
+Gestor --> Pantalla: mostrarDadesPerfil()
+Pantalla --> Client: mostraPerfil()
+
+Client -> Pantalla: modificarDades()
+Client -> Pantalla: guardarCanvis()
+Pantalla -> Gestor: guardarCanvis(dades)
+
+Gestor -> Gestor: validarDades(dades)
+
+alt dades vàlides
+    Gestor -> ClientEntitat: actualitzarDades(dades)
+    activate ClientEntitat
+    ClientEntitat --> Gestor: dadesActualitzades
+    deactivate ClientEntitat
+
+    Gestor --> Pantalla: actualitzacioConfirmada()
+    Pantalla --> Client: mostraConfirmacio()
+else dades no vàlides
+    Gestor --> Pantalla: informarDadesNoValides()
+    Pantalla --> Client: mostraError()
+end
+
+deactivate Gestor
+deactivate Pantalla
 
 @enduml
+

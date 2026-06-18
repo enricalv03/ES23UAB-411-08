@@ -1,56 +1,29 @@
 @startuml
-title Diagrama de seqüència - Pagar una comanda   
+skinparam defaultFontName Helvetica
+
+title Diagrama de sequencia - Pagar una comanda
 
 actor Client
-actor "Passarel·la pagament" as Passarella
+boundary PantallaPagament
+control GestorPagaments
+entity Comanda
+boundary "Interficie de pagament" as InterficiePagament
 
-boundary "PantallaPagament" as Pantalla
-control "GestorPagaments" as Gestor
-entity "Comanda" as ComandaEntitat
+Client -> PantallaPagament: accedirPagament()
+PantallaPagament -> GestorPagaments: sollicitarDadesPagament()
+GestorPagaments -> Comanda: obtenirImport()
+Comanda --> GestorPagaments: importComanda
+GestorPagaments --> PantallaPagament: mostrarImportIMetodes()
 
-Client -> Pantalla: iniciarPagament()
-activate Pantalla
+Client -> PantallaPagament: seleccionarMetode()
+Client -> PantallaPagament: confirmarPagament()
+PantallaPagament -> GestorPagaments: processarPagament(metode)
+GestorPagaments -> InterficiePagament: realitzarPagament()
+InterficiePagament --> GestorPagaments: pagamentConfirmat
 
-Pantalla -> Gestor: procesarPagament()
-activate Gestor
+GestorPagaments -> Comanda: actualitzarEstatPagada()
+Comanda --> GestorPagaments: estatActualitzat
+GestorPagaments --> PantallaPagament: mostrarConfirmacio()
+PantallaPagament --> Client: pagamentCompletat()
 
-Gestor -> ComandaEntitat: obtenirDetalls()
-activate ComandaEntitat
-ComandaEntitat --> Gestor: import, estat
-deactivate ComandaEntitat
-
-Gestor --> Pantalla: mostrarOpcionsPagament()
-Pantalla --> Client: mostraOpcions()
-
-Client -> Pantalla: seleccionarMetode()
-Pantalla -> Gestor: enviaMetodePagament()
-
-Gestor -> Passarella: processarPagament()
-activate Passarella
-
-alt pagament exitós
-    Passarella --> Gestor: confirmacioOK()
-    deactivate Passarella
-    Gestor -> ComandaEntitat: actualitzarEstat()
-    activate ComandaEntitat
-    ComandaEntitat --> Gestor: estatActualitzat
-    deactivate ComandaEntitat
-    Gestor --> Pantalla: pagamentConfirmat()
-    Pantalla --> Client: mostraConfirmacio()
-else pagament fallit
-    Passarella --> Gestor: errorPagament()
-    deactivate Passarella
-    Gestor --> Pantalla: mostrarError()
-    Pantalla --> Client: mostraError()
-    note right of Gestor: El client pot reintentar\n(flux alternatiu)
-    loop reintent
-        Client -> Pantalla: reintentarPagament()
-        Pantalla -> Gestor: reintentar()
-        Gestor -> Passarella: processarPagament()
-        ' es podria afegir més detall, però es simplifica
-    end
-end
-
-deactivate Gestor
-deactivate Pantalla
 @enduml

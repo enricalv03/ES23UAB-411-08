@@ -1,13 +1,53 @@
-@startuml DiagramUnamed-proposar-plat
-title DS - Proposar plat personalitzat
+@startuml
+skinparam defaultFontName Helvetica
 
-actor Client as Cl
-participant "Sistema QueMenges" as S
-actor Cuiner as C
+title Diagrama de sequencia - Proposar un plat personalitzat
 
-Cl -> S: crear proposta de plat
-S -> S: desar proposta pendent
-S -> C: notificar nova proposta
-S --> Cl: proposta enviada
+actor Client
+
+boundary "PantallaPropostaPlat" as Pantalla
+control "GestorPropostes" as Gestor
+entity "Plat" as PlatEntitat
+entity "PropostaPlat" as PropostaEntitat
+
+Client -> Pantalla: iniciarProposta()
+activate Pantalla
+
+Pantalla -> Gestor: prepararProposta()
+activate Gestor
+Gestor --> Pantalla: mostrarOpcions()
+Pantalla --> Client: mostraOpcions()
+
+Client -> Pantalla: seleccionarTipusProposta()
+
+alt plat completament nou
+    Client -> Pantalla: introduirDadesPlat()
+    Pantalla -> Gestor: enviarPropostaNova(dades)
+else modificar recepta existent
+    Client -> Pantalla: seleccionarPlat()
+    Pantalla -> Gestor: obtenirIngredientsOpcionals()
+
+    Gestor -> PlatEntitat: consultarIngredientsOpcionals()
+    activate PlatEntitat
+    PlatEntitat --> Gestor: ingredientsOpcionals
+    deactivate PlatEntitat
+
+    Gestor --> Pantalla: mostrarIngredientsOpcionals()
+    Pantalla --> Client: mostraIngredientsOpcionals()
+
+    Client -> Pantalla: seleccionarIngredientsAEliminar()
+    Pantalla -> Gestor: enviarModificacio(ingredients)
+end
+
+Gestor -> PropostaEntitat: registrarProposta()
+activate PropostaEntitat
+PropostaEntitat --> Gestor: propostaRegistrada
+deactivate PropostaEntitat
+
+Gestor --> Pantalla: confirmarProposta()
+Pantalla --> Client: mostraConfirmacio()
+
+deactivate Gestor
+deactivate Pantalla
 
 @enduml
