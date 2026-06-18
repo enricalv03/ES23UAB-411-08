@@ -1,0 +1,229 @@
+@startuml diagrama-classe-detallat
+
+top to bottom direction
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+  ArrowColor #8B0000
+  FontColor black
+}
+skinparam abstractClass {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+}
+skinparam arrow {
+  Color #8B0000
+}
+skinparam note {
+  BackgroundColor #FFFEF0
+  BorderColor #8B0000
+}
+
+title Diagrama de classes - QueMenges
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+abstract class usuari {
+  id
+  email
+  nom
+  iniciar_sessio()
+  tancar_sessio()
+}
+
+class usuariNoRegistrat {
+  consultar_menus()
+  consultar_plats()
+  registrar()
+  iniciar_sessio()
+}
+
+class client {
+  fer_comanda()
+  reservar_comanda()
+  veure_historial()
+  repetir_comanda()
+  valorar_comanda()
+  proposar_plat()
+}
+
+class cuiner {
+  disponible
+  hora_disponible
+  actualitzar_disponibilitat()
+  configurar_recollida()
+  veure_propostes()
+  acceptar_proposta()
+}
+
+class repartidor {
+  veure_comandes_enviament()
+  realitzar_lliurament()
+  enviar_ubicacio_gps()
+}
+
+class menu {
+  nom
+  consultar()
+}
+
+class plat {
+  nom
+  preu
+  consultar()
+}
+
+class ingredient {
+  nom
+}
+
+class alergen {
+  nom
+}
+
+class comanda {
+  estat
+  import_total
+  data
+  calcular_import()
+  confirmar()
+}
+
+class historialComandes {
+  consultar()
+  obtenir_comanda()
+}
+
+class enviament {
+  tipus_recollida
+  cost_enviament
+  ubicacio_actual
+  calcular_cost()
+  actualitzar_ubicacio()
+}
+
+class pagament {
+  import_pagament
+  estat
+  pagar()
+  confirmar_pagament()
+}
+
+class valoracio {
+  puntuacio
+  puntualitat
+  valorar()
+}
+
+class proposta_plat {
+  descripcio
+  estat
+  proposar()
+  acceptar()
+}
+
+class xat {
+  enviar_missatge()
+}
+
+class subscripcio {
+  activa
+  quota_mensual
+  activar_pla()
+  aplicar_descompte()
+}
+
+interface IAutenticacio {
+  registrar()
+  iniciar_sessio()
+}
+
+interface IPagament {
+  pagar()
+  confirmar_pagament()
+}
+
+interface PassarellaPagament {
+  processar_pagament()
+  fer_transferencia()
+}
+
+interface ServeiMapaGPS {
+  obtenir_ubicacio()
+  calcular_ruta()
+}
+
+
+
+class GestorComandes {
+  crear_comanda()
+  reservar_comanda()
+  repetir_comanda()
+  calcular_import()
+}
+
+class GestorPagaments {
+  processar_pagament()
+  confirmar_pagament()
+}
+
+
+
+usuari <|-- client
+usuari <|-- cuiner
+usuari <|-- repartidor
+
+
+usuariNoRegistrat ..> usuari : registre
+usuariNoRegistrat ..> menu
+usuariNoRegistrat ..> plat
+
+client ..> menu
+client ..> plat
+
+cuiner "1" *-- "0..*" menu
+menu "1" *-- "1..*" plat
+
+client "1" -- "0..*" comanda
+cuiner "1" -- "0..*" comanda
+
+comanda "1" *-- "0..1" pagament
+comanda "1" *-- "0..1" enviament
+comanda "1" *-- "0..1" valoracio
+
+repartidor "0..1" -- "0..*" enviament
+
+client "1" -- "0..*" proposta_plat
+cuiner "1" -- "0..*" proposta_plat
+
+proposta_plat "1" *-- "0..1" xat
+
+client "1" -- "0..1" subscripcio
+
+
+
+client "1" -- "1" historialComandes
+historialComandes "1" -- "0..*" comanda
+
+plat "1" -- "0..*" ingredient
+plat "0..*" -- "0..*" alergen
+
+IAutenticacio ..> usuari
+IPagament ..> pagament
+
+GestorComandes --> comanda
+GestorComandes --> client
+
+GestorPagaments --> pagament
+
+GestorPagaments ..> PassarellaPagament
+
+GestorComandes ..> ServeiMapaGPS
+enviament ..> ServeiMapaGPS
+repartidor ..> ServeiMapaGPS
+
+@enduml
