@@ -1,0 +1,158 @@
+@startuml diagrama-classe-detallat
+
+top to bottom direction
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+  ArrowColor #8B0000
+  FontColor black
+}
+skinparam abstractClass {
+  BackgroundColor #FFFACD
+  BorderColor #8B0000
+}
+skinparam arrow {
+  Color #8B0000
+}
+skinparam note {
+  BackgroundColor #FFFEF0
+  BorderColor #8B0000
+}
+
+title Diagrama de classes - QueMenges
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+abstract class usuari {
+  
+}
+
+class usuariNoRegistrat {
+}
+
+class client {
+  
+}
+
+class cuiner {
+}
+
+class repartidor {
+}
+
+class menu {
+  
+}
+
+class plat {
+}
+
+class ingredient {
+  
+}
+
+class alergen {
+  
+}
+
+class comanda {
+}
+
+class historialComandes {
+}
+
+class enviament {
+}
+
+class pagament {
+}
+
+class valoracio {
+}
+
+class proposta_plat {
+}
+
+class xat {
+}
+
+class subscripcio {
+}
+
+
+interface IAutenticacio {
+}
+
+interface IPagament {
+}
+
+interface PassarellaPagament {
+}
+
+interface ServeiMapaGPS {
+}
+
+class GestorComandes {
+}
+
+class GestorPagaments {
+}
+
+
+usuari <|-- client
+usuari <|-- cuiner
+usuari <|-- repartidor
+
+
+usuariNoRegistrat ..> usuari : registre
+usuariNoRegistrat ..> menu
+usuariNoRegistrat ..> plat
+
+client ..> menu
+client ..> plat
+
+cuiner "1" *-- "0..*" menu
+menu "1" *-- "1..*" plat
+
+client "1" -- "0..*" comanda
+cuiner "1" -- "0..*" comanda
+
+comanda "1" *-- "0..1" pagament
+comanda "1" *-- "0..1" enviament
+comanda "1" *-- "0..1" valoracio
+
+repartidor "0..1" -- "0..*" enviament
+
+client "1" -- "0..*" proposta_plat
+cuiner "1" -- "0..*" proposta_plat
+
+proposta_plat "1" *-- "0..1" xat
+
+client "1" -- "0..1" subscripcio
+
+
+client "1" -- "1" historialComandes
+historialComandes "1" -- "0..*" comanda
+
+plat "1" -- "0..*" ingredient
+plat "0..*" -- "0..*" alergen
+
+IAutenticacio ..> usuari
+IPagament ..> pagament
+
+GestorComandes --> comanda
+GestorComandes --> client
+
+GestorPagaments --> pagament
+
+GestorPagaments ..> PassarellaPagament
+
+GestorComandes ..> ServeiMapaGPS
+enviament ..> ServeiMapaGPS
+repartidor ..> ServeiMapaGPS
+
+@enduml
